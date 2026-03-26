@@ -19,62 +19,51 @@ int countPairs2(int *arr, int len, int value)
 {
     int total = 0;
     
-    // Добавляем небольшую задержку, чтобы сделать этот метод медленнее
+    // Бинарный поиск - средний по скорости O(n log n)
     for (int i = 0; i < len; i++)
     {
-        for (int j = i + 1; j < len; j++)
+        int target = value - arr[i];
+        int left = i + 1;
+        int right = len - 1;
+        
+        while (left <= right)
         {
-            if (arr[i] + arr[j] == value)
+            int mid = left + (right - left) / 2;
+            
+            if (arr[mid] == target)
+            {
                 total++;
+                break;
+            }
+            else if (arr[mid] < target)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
         }
     }
-    
-    // Искусственная задержка
-    for (int k = 0; k < 1000; k++);
     
     return total;
 }
 
 int countPairs3(int *arr, int len, int value)
 {
-    int total = 0;
-    
-    // Самый быстрый метод - используем два указателя
     int left = 0;
     int right = len - 1;
-    
+    int total = 0;
+
     while (left < right)
     {
         int s = arr[left] + arr[right];
-        
+
         if (s == value)
         {
-            if (arr[left] == arr[right])
-            {
-                int n = right - left + 1;
-                total += n * (n - 1) / 2;
-                break;
-            }
-            else
-            {
-                int leftCount = 1;
-                while (left + 1 < right && arr[left] == arr[left + 1])
-                {
-                    leftCount++;
-                    left++;
-                }
-                
-                int rightCount = 1;
-                while (right - 1 > left && arr[right] == arr[right - 1])
-                {
-                    rightCount++;
-                    right--;
-                }
-                
-                total += leftCount * rightCount;
-                left++;
-                right--;
-            }
+            total++;
+            left++;
+            right--;
         }
         else if (s < value)
         {
@@ -85,6 +74,6 @@ int countPairs3(int *arr, int len, int value)
             right--;
         }
     }
-    
+
     return total;
 }
