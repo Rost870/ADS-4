@@ -1,20 +1,20 @@
 // Copyright 2021 NNTU-CS
-int countPairs1(int *arr,int len,int value)
+// Copyright 2021 NNTU-CS
+int countPairs1(int *arr, int len, int value)
 {
     int total = 0;
 
-        for (int a = 0; a < len; a++)
+    for (int a = 0; a < len; a++)
+    {
+        for (int b = a + 1; b < len; b++)
         {
-            for (int b = a + 1; b < len; b++)
-            {
-                if (arr[a] + arr[b] == value)
-                    total++;
-            }
+            if (arr[a] + arr[b] == value)
+                total++;
         }
+    }
 
-        return total;
+    return total;
 }
-
 
 int countPairs2(int *arr, int len, int value)
 {
@@ -28,9 +28,32 @@ int countPairs2(int *arr, int len, int value)
 
         if (s == value)
         {
-            total++;
-            left++;   
-            right--;
+            if (arr[left] == arr[right])
+            {
+                int count = right - left + 1;
+                total += count * (count - 1) / 2;
+                break;
+            }
+            else
+            {
+                int leftCount = 1;
+                while (left + 1 < right && arr[left] == arr[left + 1])
+                {
+                    leftCount++;
+                    left++;
+                }
+                
+                int rightCount = 1;
+                while (right - 1 > left && arr[right] == arr[right - 1])
+                {
+                    rightCount++;
+                    right--;
+                }
+                
+                total += leftCount * rightCount;
+                left++;
+                right--;
+            }
         }
         else if (s < value)
         {
@@ -62,11 +85,17 @@ int countPairs3(int *arr, int len, int value)
 
             if (arr[mid] == target)
             {
+              
                 result++;
-                break; 
+                int j = mid + 1;
+                while (j <= right && arr[j] == target)
+                {
+                    result++;
+                    j++;
+                }
+                break;
             }
-
-            if (arr[mid] < target)
+            else if (arr[mid] < target)
             {
                 left = mid + 1;
             }
