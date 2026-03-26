@@ -28,16 +28,16 @@ int countPairs2(int *arr, int len, int value)
 
         if (s == value)
         {
-           
             if (arr[left] == arr[right])
             {
-                int count = right - left + 1;
-                total += count * (count - 1) / 2;
+                
+                int n = right - left + 1;
+                total += n * (n - 1) / 2;
                 break;
             }
             else
             {
-                
+            
                 int leftCount = 1;
                 while (left + 1 < right && arr[left] == arr[left + 1])
                 {
@@ -45,7 +45,7 @@ int countPairs2(int *arr, int len, int value)
                     left++;
                 }
                 
-         
+              
                 int rightCount = 1;
                 while (right - 1 > left && arr[right] == arr[right - 1])
                 {
@@ -79,19 +79,34 @@ int countPairs3(int *arr, int len, int value)
     {
         int target = value - arr[i];
         
-        
         int left = i + 1;
         int right = len - 1;
-        int first = -1;
         
+     
         while (left <= right)
         {
             int mid = left + (right - left) / 2;
             
             if (arr[mid] == target)
             {
-                first = mid;
-                right = mid - 1; 
+                
+                int count = 1;
+              
+                int j = mid - 1;
+                while (j >= left && arr[j] == target)
+                {
+                    count++;
+                    j--;
+                }
+              
+                j = mid + 1;
+                while (j <= right && arr[j] == target)
+                {
+                    count++;
+                    j++;
+                }
+                total += count;
+                break;
             }
             else if (arr[mid] < target)
             {
@@ -101,35 +116,6 @@ int countPairs3(int *arr, int len, int value)
             {
                 right = mid - 1;
             }
-        }
-        
-        if (first != -1)
-        {
-            
-            left = first;
-            right = len - 1;
-            int last = first;
-            
-            while (left <= right)
-            {
-                int mid = left + (right - left) / 2;
-                
-                if (arr[mid] == target)
-                {
-                    last = mid;
-                    left = mid + 1; 
-                }
-                else if (arr[mid] < target)
-                {
-                    left = mid + 1;
-                }
-                else
-                {
-                    right = mid - 1;
-                }
-            }
-            
-            total += (last - first + 1);
         }
     }
     
