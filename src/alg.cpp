@@ -1,20 +1,20 @@
 // Copyright 2021 NNTU-CS
-
-int countPairs1(int *arr, int len, int value)
+int countPairs1(int *arr,int len,int value)
 {
     int total = 0;
 
-    for (int a = 0; a < len; a++)
-    {
-        for (int b = a + 1; b < len; b++)
+        for (int a = 0; a < len; a++)
         {
-            if (arr[a] + arr[b] == value)
-                total++;
+            for (int b = a + 1; b < len; b++)
+            {
+                if (arr[a] + arr[b] == value)
+                    total++;
+            }
         }
-    }
 
-    return total;
+        return total;
 }
+
 
 int countPairs2(int *arr, int len, int value)
 {
@@ -28,29 +28,8 @@ int countPairs2(int *arr, int len, int value)
 
         if (s == value)
         {
-            if (arr[left] == arr[right])
-            {
-                int n = right - left + 1;
-                total += n * (n - 1) / 2;
-                break;
-            }
-            
-            int leftCount = 1;
-            while (left + 1 < right && arr[left] == arr[left + 1])
-            {
-                leftCount++;
-                left++;
-            }
-            
-            int rightCount = 1;
-            while (right - 1 > left && arr[right] == arr[right - 1])
-            {
-                rightCount++;
-                right--;
-            }
-            
-            total += leftCount * rightCount;
-            left++;
+            total++;
+            left++;   
             right--;
         }
         else if (s < value)
@@ -84,17 +63,10 @@ int countPairs3(int *arr, int len, int value)
             if (arr[mid] == target)
             {
                 result++;
-                
-                int j = mid + 1;
-                while (j <= right && arr[j] == target)
-                {
-                    result++;
-                    j++;
-                }
-                
-                break;
+                break; 
             }
-            else if (arr[mid] < target)
+
+            if (arr[mid] < target)
             {
                 left = mid + 1;
             }
