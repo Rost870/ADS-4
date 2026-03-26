@@ -92,13 +92,6 @@ int countPairs3(int *arr, int len, int value)
                     j++;
                 }
                 
-                j = mid - 1;
-                while (j >= left && arr[j] == target)
-                {
-                    result++;
-                    j--;
-                }
-                
                 break;
             }
             else if (arr[mid] < target)
@@ -112,5 +105,5 @@ int countPairs3(int *arr, int len, int value)
         }
     }
 
-    return result / 2;
+    return result;
 }
