@@ -1,5 +1,7 @@
 // Copyright 2021 NNTU-CS
 
+#include <iostream>
+
 int countPairs1(int *arr, int len, int value)
 {
     int total = 0;
@@ -15,7 +17,6 @@ int countPairs1(int *arr, int len, int value)
 
     return total;
 }
-
 
 int countPairs2(int *arr, int len, int value)
 {
@@ -86,7 +87,24 @@ int countPairs3(int *arr, int len, int value)
             
             if (arr[mid] == target)
             {
+                
                 total++;
+                
+               
+                int j = mid - 1;
+                while (j >= left && arr[j] == target)
+                {
+                    total++;
+                    j--;
+                }
+                
+                j = mid + 1;
+                while (j <= right && arr[j] == target)
+                {
+                    total++;
+                    j++;
+                }
+                
                 break;
             }
             else if (arr[mid] < target)
