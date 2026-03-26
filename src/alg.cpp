@@ -19,7 +19,7 @@ int countPairs2(int *arr, int len, int value)
 {
     int total = 0;
     
-    // Бинарный поиск - средний по скорости O(n log n)
+    // Бинарный поиск с учётом дубликатов
     for (int i = 0; i < len; i++)
     {
         int target = value - arr[i];
@@ -33,6 +33,13 @@ int countPairs2(int *arr, int len, int value)
             if (arr[mid] == target)
             {
                 total++;
+                // Ищем все вхождения справа
+                int j = mid + 1;
+                while (j <= right && arr[j] == target)
+                {
+                    total++;
+                    j++;
+                }
                 break;
             }
             else if (arr[mid] < target)
@@ -61,9 +68,32 @@ int countPairs3(int *arr, int len, int value)
 
         if (s == value)
         {
-            total++;
-            left++;
-            right--;
+            if (arr[left] == arr[right])
+            {
+                int n = right - left + 1;
+                total += n * (n - 1) / 2;
+                break;
+            }
+            else
+            {
+                int leftCount = 1;
+                while (left + 1 < right && arr[left] == arr[left + 1])
+                {
+                    leftCount++;
+                    left++;
+                }
+                
+                int rightCount = 1;
+                while (right - 1 > left && arr[right] == arr[right - 1])
+                {
+                    rightCount++;
+                    right--;
+                }
+                
+                total += leftCount * rightCount;
+                left++;
+                right--;
+            }
         }
         else if (s < value)
         {
