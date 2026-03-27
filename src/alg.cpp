@@ -30,9 +30,31 @@ int countPairs2(int *arr, int len, int value)
 
         if (s == value)
         {
-            total++;
-            left++;   
-            right--;
+            if (arr[left] == arr[right])
+            {
+                int n = right - left + 1;
+                total += n * (n - 1) / 2;
+                break;
+            }
+
+            int leftVal = arr[left];
+            int rightVal = arr[right];
+            int countLeft = 0;
+            int countRight = 0;
+
+            while (left < right && arr[left] == leftVal)
+            {
+                countLeft++;
+                left++;
+            }
+
+            while (right >= left && arr[right] == rightVal)
+            {
+                countRight++;
+                right--;
+            }
+
+            total += countLeft * countRight;
         }
         else if (s < value)
         {
@@ -64,18 +86,20 @@ int countPairs3(int *arr, int len, int value)
 
             if (arr[mid] == target)
             {
-                result++;
-                break; 
+                // считаем все дубликаты
+                int k = mid;
+                while (k <= right && arr[k] == target)
+                {
+                    result++;
+                    k++;
+                }
+                break;
             }
 
             if (arr[mid] < target)
-            {
                 left = mid + 1;
-            }
             else
-            {
                 right = mid - 1;
-            }
         }
     }
 
