@@ -29,21 +29,17 @@ int countPairs2(int *arr, int len, int value)
         int left = i + 1;
         int right = len - 1;
 
+     
+        int pos = -1;
+
         while (left <= right)
         {
             int mid = left + (right - left) / 2;
 
             if (arr[mid] == target)
             {
-                total++;
-
-                int k = mid + 1;
-                while (k < len && arr[k] == target)
-                {
-                    total++;
-                    k++;
-                }
-                break;
+                pos = mid;
+                right = mid - 1;
             }
             else if (arr[mid] < target)
             {
@@ -52,6 +48,17 @@ int countPairs2(int *arr, int len, int value)
             else
             {
                 right = mid - 1;
+            }
+        }
+
+       
+        if (pos != -1)
+        {
+            int k = pos;
+            while (k < len && arr[k] == target)
+            {
+                total++;
+                k++;
             }
         }
     }
@@ -66,12 +73,16 @@ int countPairs3(int *arr, int len, int value)
 
     while (left < right)
     {
-        int s = arr[left] + arr[right];
+        int sum = arr[left] + arr[right];
 
-        if (s < value)
+        if (sum < value)
+        {
             left++;
-        else if (s > value)
+        }
+        else if (sum > value)
+        {
             right--;
+        }
         else
         {
             if (arr[left] == arr[right])
@@ -81,16 +92,25 @@ int countPairs3(int *arr, int len, int value)
                 break;
             }
 
-            int l = left;
-            int r = right;
+            int leftVal = arr[left];
+            int rightVal = arr[right];
 
-            while (l <= r && arr[l] == arr[left]) l++;
-            while (r >= l && arr[r] == arr[right]) r--;
+            int countLeft = 0;
+            int countRight = 0;
 
-            total += (l - left) * (right - r);
+            while (left < right && arr[left] == leftVal)
+            {
+                countLeft++;
+                left++;
+            }
 
-            left = l;
-            right = r;
+            while (right >= left && arr[right] == rightVal)
+            {
+                countRight++;
+                right--;
+            }
+
+            total += countLeft * countRight;
         }
     }
 
