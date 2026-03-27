@@ -1,62 +1,24 @@
 // Copyright 2021 NNTU-CS
-int countPairs1(int *arr, int len, int value)
+#include <iostream>
+
+int countPairs1(int *arr,int len,int value)
 {
     int total = 0;
 
-    for (int a = 0; a < len; a++)
-    {
-        for (int b = a + 1; b < len; b++)
+        for (int a = 0; a < len; a++)
         {
-            if (arr[a] + arr[b] == value)
-                total++;
+            for (int b = a + 1; b < len; b++)
+            {
+                if (arr[a] + arr[b] == value)
+                    total++;
+            }
         }
-    }
 
-    return total;
+        return total;
 }
+
 
 int countPairs2(int *arr, int len, int value)
-{
-    int total = 0;
-    
-    // Бинарный поиск с учётом дубликатов
-    for (int i = 0; i < len; i++)
-    {
-        int target = value - arr[i];
-        int left = i + 1;
-        int right = len - 1;
-        
-        while (left <= right)
-        {
-            int mid = left + (right - left) / 2;
-            
-            if (arr[mid] == target)
-            {
-                total++;
-                // Ищем все вхождения справа
-                int j = mid + 1;
-                while (j <= right && arr[j] == target)
-                {
-                    total++;
-                    j++;
-                }
-                break;
-            }
-            else if (arr[mid] < target)
-            {
-                left = mid + 1;
-            }
-            else
-            {
-                right = mid - 1;
-            }
-        }
-    }
-    
-    return total;
-}
-
-int countPairs3(int *arr, int len, int value)
 {
     int left = 0;
     int right = len - 1;
@@ -68,32 +30,9 @@ int countPairs3(int *arr, int len, int value)
 
         if (s == value)
         {
-            if (arr[left] == arr[right])
-            {
-                int n = right - left + 1;
-                total += n * (n - 1) / 2;
-                break;
-            }
-            else
-            {
-                int leftCount = 1;
-                while (left + 1 < right && arr[left] == arr[left + 1])
-                {
-                    leftCount++;
-                    left++;
-                }
-                
-                int rightCount = 1;
-                while (right - 1 > left && arr[right] == arr[right - 1])
-                {
-                    rightCount++;
-                    right--;
-                }
-                
-                total += leftCount * rightCount;
-                left++;
-                right--;
-            }
+            total++;
+            left++;   
+            right--;
         }
         else if (s < value)
         {
@@ -106,4 +45,39 @@ int countPairs3(int *arr, int len, int value)
     }
 
     return total;
+}
+
+int countPairs3(int *arr, int len, int value)
+{
+    int result = 0;
+
+    for (int i = 0; i < len; i++)
+    {
+        int target = value - arr[i];
+
+        int left = i + 1;
+        int right = len - 1;
+
+        while (left <= right)
+        {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] == target)
+            {
+                result++;
+                break; 
+            }
+
+            if (arr[mid] < target)
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+    }
+
+    return result;
 }
