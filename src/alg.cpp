@@ -28,7 +28,15 @@ int countPairs2(int *arr, int len, int value)
     {
         int s = arr[left] + arr[right];
 
-        if (s == value)
+        if (s < value)
+        {
+            left++;
+        }
+        else if (s > value)
+        {
+            right--;
+        }
+        else
         {
             if (arr[left] == arr[right])
             {
@@ -37,38 +45,24 @@ int countPairs2(int *arr, int len, int value)
                 break;
             }
 
-            int leftVal = arr[left];
-            int rightVal = arr[right];
-            int countLeft = 0;
-            int countRight = 0;
+            int l = left;
+            int r = right;
 
-            while (left < right && arr[left] == leftVal)
-            {
-                countLeft++;
-                left++;
-            }
+            while (l <= r && arr[l] == arr[left]) l++;
+            while (r >= l && arr[r] == arr[right]) r--;
 
-            while (right >= left && arr[right] == rightVal)
-            {
-                countRight++;
-                right--;
-            }
+            int countLeft = l - left;
+            int countRight = right - r;
 
             total += countLeft * countRight;
-        }
-        else if (s < value)
-        {
-            left++;
-        }
-        else
-        {
-            right--;
+
+            left = l;
+            right = r;
         }
     }
 
     return total;
 }
-
 int countPairs3(int *arr, int len, int value)
 {
     int result = 0;
@@ -80,26 +74,36 @@ int countPairs3(int *arr, int len, int value)
         int left = i + 1;
         int right = len - 1;
 
+  
+        int pos = -1;
+
         while (left <= right)
         {
             int mid = left + (right - left) / 2;
 
             if (arr[mid] == target)
             {
-                // считаем все дубликаты
-                int k = mid;
-                while (k <= right && arr[k] == target)
-                {
-                    result++;
-                    k++;
-                }
-                break;
+                pos = mid;
+                right = mid - 1; 
             }
-
-            if (arr[mid] < target)
+            else if (arr[mid] < target)
+            {
                 left = mid + 1;
+            }
             else
+            {
                 right = mid - 1;
+            }
+        }
+
+        if (pos != -1)
+        {
+            int k = pos;
+            while (k < len && arr[k] == target)
+            {
+                result++;
+                k++;
+            }
         }
     }
 
